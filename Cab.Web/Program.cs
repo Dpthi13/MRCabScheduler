@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Database connection string is missing.");
 
-// Register SqlHelper as a singleton (ensure it is thread-safe; otherwise consider Scoped or Transient)
+// Register SqlHelper as a singleton
 builder.Services.AddSingleton(new SqlHelper(connectionString));
 
 // Register IUserService and its implementation UserService
@@ -33,8 +33,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
