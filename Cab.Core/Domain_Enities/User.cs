@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Cab.Core.Domain_Enities
 {
-    internal class User
+    public class User
     {
+        public int UserId { get; set; }
+        public string? EmpName { get; set; }
+        public string? Role { get; set; }
+        public int EmpId { get; set; }
+        public string? Password { get; set; }
     }
 }
