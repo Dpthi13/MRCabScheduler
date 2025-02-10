@@ -25,11 +25,11 @@ namespace Cab.Web.Controllers
 
             return Ok(user);
         }
-        /*[HttpGet("test")]
+        [HttpGet("test")]
         public IActionResult Test()
         {
             return Ok("API is working!");
-        }*/
+        }
 
     }
 }

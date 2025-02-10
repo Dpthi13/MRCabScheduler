@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Cab.Service\Cab.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>
