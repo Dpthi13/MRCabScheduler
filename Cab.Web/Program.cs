@@ -1,44 +1,100 @@
-using Cab.Infrastructure.Data;
 using Cab.Core.Interface;
+using Cab.Infrastructure.Data;
+using Cab.Infrastructure.Helpers;
 using Cab.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Builder;
-
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Cab.Infrastructure.Interfaces;
+using Newtonsoft.Json.Converters;
+using Cab.Infrastructure.Database;
+using MySql.Data.MySqlClient;
 var builder = WebApplication.CreateBuilder(args);
 
+
+/*var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);*/
+
 // Retrieve the connection string from configuration
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Database connection string is missing.");
+/*string? connectionString = builder.Configuration["Cab:ConnectionStrings:CabDatabase"]
+    ?? throw new InvalidOperationException("Database connection string is missing.");*/
+
+var connectionString = builder.Configuration["Cab:ConnectionStrings:CabDatabase"];
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Database connection string is not configured.");
+}
+
+
+
+
+
+
+builder.Services.Configure<CabAppSettings>(builder.Configuration.GetSection("Cab"));
+
+builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
+builder.Services.AddApiVersioning(config =>
+{
+    config.DefaultApiVersion = new ApiVersion(1, 0);
+    config.AssumeDefaultVersionWhenUnspecified = true;
+});
 
 // Register SqlHelper as a singleton
 builder.Services.AddSingleton(new SqlHelper(connectionString));
 
 // Register IUserService and its implementation UserService
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 
 // Add controllers
-builder.Services.AddControllers();
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "CabBookingApp API",
-        Version = "v1"
-    });
-});
+
+ConfigurationManager configuration = builder.Configuration;
+var config = configuration.GetSection("Cab");
+//adding config object so that it can be injected
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-            builder => builder.WithOrigins("http://localhost:3000") // React's default URL
+            builder => builder.AllowAnyOrigin() // React's default URL
                                .AllowAnyOrigin()
                              .AllowAnyHeader()
                              .AllowAnyMethod());
 });
+
+//JWT Authentication
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidAudience = config["Jwt:Audience"],
+        ValidIssuer = config["Jwt:Issuer"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromSeconds(30)
+
+    };
+});
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -49,15 +105,19 @@ app.UseHttpsRedirection();
 // Enable serving static files (for React build)
 app.UseStaticFiles();
 
-app.UseCors("AllowReactApp");
-
 // Enable routing
 app.UseRouting();
+
+
+
+app.UseCors("AllowReactApp");
 
 
 app.UseAuthorization();
 app.MapControllers();
 
+
+app.MapFallbackToFile("index.html");
 // Run the application
 app.Run();
 

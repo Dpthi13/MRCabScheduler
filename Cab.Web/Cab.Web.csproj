@@ -4,10 +4,30 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\static\css\main.f8c38ad4.css.map" />
+    <None Include="wwwroot\static\js\main.ae75c33a.js" />
+    <None Include="wwwroot\static\js\main.ae75c33a.js.map" />
+    <None Include="wwwroot\static\media\fa-brands-400.c210719e60948b211a12.woff2" />
+    <None Include="wwwroot\static\media\fa-regular-400.89999bdf5d835c012025.woff2" />
+    <None Include="wwwroot\static\media\fa-solid-900.2463b90d9a316e4e5294.woff2" />
+    <None Include="wwwroot\static\media\fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
