@@ -25,7 +25,7 @@ namespace Cab.Service
         public async Task<UserInfo> GetUserInformationAsync(string empId)
         {
             if (parameters.Count > 0) parameters.Clear();
-            parameters.Add("empId", empId);
+            parameters.Add("P_EmpId", empId);
             var userInfo = await _databaseService.ExecuteStoredProcAsync<UserInfo>(StoredProcedures.GetUserInformation, parameters);
 
             if (userInfo == null)

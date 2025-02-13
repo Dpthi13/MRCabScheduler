@@ -4,34 +4,19 @@ using Cab.Infrastructure.Helpers;
 using Cab.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Cab.Infrastructure.Interfaces;
-using Newtonsoft.Json.Converters;
 using Cab.Infrastructure.Database;
-using MySql.Data.MySqlClient;
 var builder = WebApplication.CreateBuilder(args);
 
 
-/*var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);*/
-
-// Retrieve the connection string from configuration
-/*string? connectionString = builder.Configuration["Cab:ConnectionStrings:CabDatabase"]
-    ?? throw new InvalidOperationException("Database connection string is missing.");*/
-
-var connectionString = builder.Configuration["Cab:ConnectionStrings:CabDatabase"];
+var connectionString = builder.Configuration.GetSection("Cab:ConnectionStrings")["CabDatabase"];
 
 if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Database connection string is not configured.");
 }
-
-
-
-
-
 
 builder.Services.Configure<CabAppSettings>(builder.Configuration.GetSection("Cab"));
 

@@ -15,12 +15,10 @@ namespace Cab.Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserManagementService _userManagementService;
-        //private readonly string? empId;
 
         public AuthController(IHttpContextAccessor contextAccessor,  IUserManagementService userManagementService)
         {
             _userManagementService = userManagementService;
-            //_empId = contextAccessor.HttpContext?.GetEmpId;
         }
         [HttpGet]
         [Route("Login")]
