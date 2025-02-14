@@ -1,15 +1,8 @@
-﻿using Dapper;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.Data.SqlClient;
-using Cab.Infrastructure.DomainEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cab.Infrastructure.DomainEntities;
+using Dapper;
 using System.Data;
 
-namespace Cab.Infrastructure.Helper_Oracle
+namespace Cab.Infrastructure.Helpers
 {
     public static class DapperHelper
     {
@@ -29,13 +22,13 @@ namespace Cab.Infrastructure.Helper_Oracle
         {
             IDictionary<string, object> dapperRowProperties = value as IDictionary<string, object>;
             foreach (KeyValuePair<string, object> property in dapperRowProperties)
-            dynamicParameters.Add(property.Key, property.Value);
+                dynamicParameters.Add(property.Key, property.Value);
         }
 
         public static void MapProperties(List<SQLParameter> values, DynamicParameters dynamicParameters)
         {
             foreach (SQLParameter param in values)
-            dynamicParameters.Add(param.Name, param.Value, param.SqlDbType == SqlDbType.Structured ? DbType.Object : null);
+                dynamicParameters.Add(param.Name, param.Value, param.SqlDbType == SqlDbType.Structured ? DbType.Object : null);
         }
 
     }

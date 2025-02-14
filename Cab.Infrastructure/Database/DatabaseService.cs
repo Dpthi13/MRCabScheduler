@@ -1,11 +1,9 @@
-﻿using Dapper;
+﻿using Cab.Infrastructure.Helpers;
 using Cab.Infrastructure.Interfaces;
-using Microsoft.Extensions.Options;
+using Dapper;
 using Microsoft.Extensions.Logging;
-using Cab.Infrastructure.Helpers;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using Cab.Infrastructure.DomainEntities;
-using Cab.Infrastructure.Helper_Oracle;
 using System.Data;
 
 
@@ -20,7 +18,7 @@ namespace Cab.Infrastructure.Database
         public DatabaseService(IOptions<CabAppSettings> settings, ILogger<DatabaseService> logger)
         {
             _logger = logger;
-            if(settings == null )
+            if (settings == null)
             {
                 throw new ArgumentNullException(nameof(settings));
                 //_timeout = settings.Value.ConnectionStrings.ConnectionTimeout;
@@ -38,22 +36,22 @@ namespace Cab.Infrastructure.Database
                 {
                     DapperHelper.MapProperties(procParams, parameters);
                 }
-                var result = await connection.QueryAsync<T>(procName, parameters, commandType: CommandType.StoredProcedure, commandTimeout : 180).ConfigureAwait(false);
+                var result = await connection.QueryAsync<T>(procName, parameters, commandType: CommandType.StoredProcedure, commandTimeout: 180);
                 return result.FirstOrDefault();
             }
         }
 
         public async Task<IEnumerable<T>> ExecuteStoredProcListAsync<T>(string procName, Dictionary<string, string> procParams)
         {
-            using (var connection = new MySqlConnection(_connectionString)) 
-            { 
+            using (var connection = new MySqlConnection(_connectionString))
+            {
                 await connection.OpenAsync();
                 var parameters = new DynamicParameters();
-                if(procParams != null)
+                if (procParams != null)
                 {
-                    DapperHelper.MapProperties(procParams , parameters);
+                    DapperHelper.MapProperties(procParams, parameters);
                 }
-                var result = await connection.QueryAsync<T>(procName, parameters, commandType : CommandType.StoredProcedure, commandTimeout: 180).ConfigureAwait(false);
+                var result = await connection.QueryAsync<T>(procName, parameters, commandType: CommandType.StoredProcedure, commandTimeout: 180);
                 return result;
             }
         }
@@ -63,9 +61,50 @@ namespace Cab.Infrastructure.Database
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var result = await connection.QueryAsync<T>(procName, null, commandType: CommandType.StoredProcedure, commandTimeout: 180).ConfigureAwait(false);
+                var result = await connection.QueryAsync<T>(procName, null, commandType: CommandType.StoredProcedure, commandTimeout: 180);
                 return result;
             }
         }
+
+        //Executes a SELECT query that retrieves multiple rows. 
+        public async Task<IEnumerable<T>> GetAllAsync<T>(string query, object parameters)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.QueryAsync<T>(query, parameters);
+            }
+        }
+
+        //Executes a SELECT query that retrieves all records without using parameters
+        public async Task<IEnumerable<T>> GetAllAsync<T>(string query)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.QueryAsync<T>(query);
+            }
+        }
+
+        //Executes a SELECT query that is expected to return only one row.
+        public async Task<T> GetSingleAsync<T>(string query, object parameters)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.QuerySingleOrDefaultAsync<T>(query, parameters);
+            }
+        }
+
+        //Executes INSERT, UPDATE, DELETE queries.It Does not return any data, returns only number of rows affected.(For eg: 1 or 2)
+        public async Task<int> ExecuteNonQueryAsync(string query, object parameters)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.ExecuteAsync(query, parameters, commandTimeout: 180);
+            }
+        }
+
     }
 }
