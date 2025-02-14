@@ -1,15 +1,11 @@
 ﻿using Cab.Infrastructure.DomainEntities;
-using Cab.Infrastructure.Interfaces;
 using Cab.Infrastructure.Helpers;
+using Cab.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Cab.Service
 {
@@ -33,9 +29,9 @@ namespace Cab.Service
             };
 
             var token = new JwtSecurityToken(
-                issuer : _settings.Value.Jwt.Issuer,
-                audience : _settings.Value.Jwt.Audience,
-                claims : claims,
+                issuer: _settings.Value.Jwt.Issuer,
+                audience: _settings.Value.Jwt.Audience,
+                claims: claims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddSeconds(TimeSpan.Parse(_settings.Value.Jwt.Validity).TotalSeconds),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Value.Jwt.Key)), SecurityAlgorithms.HmacSha256Signature)

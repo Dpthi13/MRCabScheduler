@@ -1,18 +1,12 @@
-﻿using Cab.Infrastructure.DomainEntities;
+﻿using Cab.Infrastructure.Constants;
 using Cab.Infrastructure.Interfaces;
-using Cab.Infrastructure.Constants;
 using UserInfo = Cab.Infrastructure.DomainEntities.UserInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cab.Service
 {
     public class UserManagementService : IUserManagementService
     {
-       private readonly ITokenService _tokenService;
+        private readonly ITokenService _tokenService;
         private readonly IDatabaseService _databaseService;
         private Dictionary<string, string> parameters = new Dictionary<string, string>();
 

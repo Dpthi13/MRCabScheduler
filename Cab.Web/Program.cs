@@ -1,13 +1,11 @@
-using Cab.Core.Interface;
-using Cab.Infrastructure.Data;
+using Cab.Infrastructure.Database;
 using Cab.Infrastructure.Helpers;
+using Cab.Infrastructure.Interfaces;
 using Cab.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Cab.Infrastructure.Interfaces;
-using Cab.Infrastructure.Database;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -23,7 +21,8 @@ builder.Services.Configure<CabAppSettings>(builder.Configuration.GetSection("Cab
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddEndpointsApiExplorer();
+
 
 builder.Services.AddApiVersioning(config =>
 {
@@ -31,23 +30,18 @@ builder.Services.AddApiVersioning(config =>
     config.AssumeDefaultVersionWhenUnspecified = true;
 });
 
-// Register SqlHelper as a singleton
-builder.Services.AddSingleton(new SqlHelper(connectionString));
 
-// Register IUserService and its implementation UserService
-builder.Services.AddSingleton<IUserService, UserService>();
+// Register
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
+builder.Services.AddSingleton<IUserManagementService, UserManagementService>();
 
-// Add controllers
-
-// Configure Swagger/OpenAPI
-builder.Services.AddEndpointsApiExplorer();
+//adding config object so that it can be injected
 
 ConfigurationManager configuration = builder.Configuration;
 var config = configuration.GetSection("Cab");
-//adding config object so that it can be injected
 
+//adding cors
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
@@ -77,14 +71,14 @@ builder.Services.AddAuthentication(x =>
 
     };
 });
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+//app.UseSwagger();
+//app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // Enable serving static files (for React build)
@@ -93,14 +87,10 @@ app.UseStaticFiles();
 // Enable routing
 app.UseRouting();
 
-
-
 app.UseCors("AllowReactApp");
-
 
 app.UseAuthorization();
 app.MapControllers();
-
 
 app.MapFallbackToFile("index.html");
 // Run the application
