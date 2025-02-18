@@ -42,15 +42,17 @@ namespace Cab.Service
         /// <returns></returns>
         public async Task RegisterUserAsync(UserRegistration userRegistration)
         {
-            if (parameters.Count > 0) parameters.Clear();
-            parameters.Add("p_EmpId", userRegistration.EmpId.ToString());
-            parameters.Add("P_EmpName", userRegistration.EmpName);
-            parameters.Add("P_Address", userRegistration.Address);
-            parameters.Add("P_EmpPhone", userRegistration.EmpPhone);
-            parameters.Add("P_EmailId", userRegistration.EmailId);
-            parameters.Add("P_Password", userRegistration.Password);
-
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "p_EmpId", userRegistration.EmpId.ToString()} ,
+                { "P_EmpName", userRegistration.EmpName},
+                { "P_Address", userRegistration.Address},
+                { "P_EmpPhone", userRegistration.EmpPhone },
+                { "P_EmailId", userRegistration.EmailId},
+                { "P_Password", userRegistration.Password},
+            };
             await _databaseService.ExecuteStoredProcAsync<UserRegistration>(StoredProcedures.GetRegisterUser, parameters);
         }
     }
 }
+
