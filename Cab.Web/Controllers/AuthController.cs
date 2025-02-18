@@ -40,6 +40,7 @@ namespace Cab.Web.Controllers
         {
             await _userManagementService.RegisterUserAsync(userRegistration);
             return NoContent();
+        
         }
     }
 }
