@@ -18,11 +18,28 @@ namespace Cab.Web.Controllers
         {
             _userManagementService = userManagementService;
         }
+        /// <summary>
+        /// Get empoyee's information
+        /// </summary>
+        /// <param name="empId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Login")]
         public async Task<UserInfo> GetUserInfoAsync(string empId)
         {
             return await _userManagementService.GetUserInformationAsync(empId);
+        }
+        /// <summary>
+        /// Register new employee in system
+        /// </summary>
+        /// <param name="userRegistration"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegistration userRegistration)
+        {
+            await _userManagementService.RegisterUserAsync(userRegistration);
+            return NoContent();
         }
     }
 }
