@@ -35,8 +35,6 @@ builder.Services.AddApiVersioning(config =>
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 builder.Services.AddSingleton<IUserManagementService, UserManagementService>();
-builder.Services.AddSingleton<IRequestCabService, RequestCabService>();
-builder.Services.AddSingleton<ICabDataService, CabDataService>();
 //adding config object so that it can be injected
 
 ConfigurationManager configuration = builder.Configuration;
