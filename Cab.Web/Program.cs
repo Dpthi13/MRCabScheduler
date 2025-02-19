@@ -2,6 +2,7 @@ using Cab.Infrastructure.Database;
 using Cab.Infrastructure.Helpers;
 using Cab.Infrastructure.Interfaces;
 using Cab.Service;
+using Cab.Web.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
@@ -36,6 +37,9 @@ builder.Services.AddApiVersioning(config =>
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 builder.Services.AddSingleton<IUserManagementService, UserManagementService>();
+builder.Services.AddSingleton<IRequestCabService, RequestCabService>();
+builder.Services.AddSingleton<ICabDataService, CabDataService>();
+
 //adding config object so that it can be injected
 
 ConfigurationManager configuration = builder.Configuration;
@@ -68,9 +72,9 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
         ValidateLifetime = true,
         ClockSkew = TimeSpan.FromSeconds(30)
-
     };
 });
+
 //builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization();
@@ -88,6 +92,13 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Enable serving static files (for React build)
+app.UseStaticFiles();
+
+// Enable routing
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseMiddleware<AuthorizationMiddleware>();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
@@ -95,8 +106,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseCors("AllowReactApp");
-
-app.UseAuthorization(); 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.MapFallbackToFile("index.html");
