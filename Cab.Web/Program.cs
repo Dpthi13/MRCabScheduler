@@ -4,6 +4,7 @@ using Cab.Infrastructure.Interfaces;
 using Cab.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
@@ -79,12 +80,19 @@ var app = builder.Build();
 //app.UseSwagger();
 //app.UseSwaggerUI();
 app.UseHttpsRedirection();
+var options = new DefaultFilesOptions();
+options.DefaultFileNames.Clear();
+options.DefaultFileNames.Add("index.html");
+app.UseDefaultFiles(options);
+app.UseStaticFiles();
+app.UseRouting();
 
 // Enable serving static files (for React build)
-app.UseStaticFiles();
-
-// Enable routing
-app.UseRouting();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = "/wwwroot"
+});
 
 app.UseCors("AllowReactApp");
 
