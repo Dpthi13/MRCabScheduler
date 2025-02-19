@@ -42,5 +42,16 @@ namespace Cab.Web.Controllers
             return NoContent();
         
         }
+        [HttpGet("test-exception")]
+        public IActionResult TestException()
+        {
+            throw new Exception("This is a test exception.");
+        }
+        [HttpGet("test-app-exception")]
+        public IActionResult TestApplicationException()
+        {
+            throw new ApplicationException("Invalid Token");
+        }
+
     }
 }
