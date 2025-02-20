@@ -30,6 +30,27 @@ namespace Cab.Web.Controllers
             return await _userManagementService.GetUserInformationAsync(empId);
         }
         /// <summary>
+        /// Authenticates a user based on the provided employee ID and password.
+        /// Returns an access token if authentication is successful; otherwise, returns an unauthorized response.
+        /// </summary>
+        /// <param name="loginRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] UserLoginRequest loginRequest)
+        {
+            var userTokenData = await _userManagementService.AuthenticateUserAsync(loginRequest.EmpId, loginRequest.Password);
+
+            if (userTokenData == null)
+                return Unauthorized(new { message = "Invalid employee ID or password" });
+
+            return Ok(new
+            {
+                empId = userTokenData.Value.EmpId,
+                accessToken = userTokenData.Value.AccessToken
+            });
+        }
+        /// <summary>
         /// Register new employee in system
         /// </summary>
         /// <param name="userRegistration"></param>
