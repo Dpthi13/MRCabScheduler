@@ -42,9 +42,9 @@ namespace Cab.Service
         /// returns the cab details
         /// </summary>
         /// <returns></returns>
-        public async Task<CabInfo> ViewCabDetailsAsync(int EmpId)
+        public async Task<CabInfo> GetCabDetailsAsync(int EmpId)
         {
-            var parameters = new Dictionary<string, string>
+            Dictionary<string, string> parameters = new Dictionary<string, string>
                 {
                     { "p_EmpId", EmpId.ToString() }
                 };

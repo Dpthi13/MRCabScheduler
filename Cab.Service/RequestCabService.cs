@@ -24,27 +24,28 @@ namespace Cab.Service
         /// </summary>
         /// <param name="requestInfo"></param>
         /// <returns></returns>
-        public async Task RequestCabAsync(RequestInfo requestInfo)
+        public async Task PostCabRequestAsync(RequestInfo requestInfo)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
                 { "p_EmpId", requestInfo.EmpId.ToString()} ,
-                { "P_RequestDate",  requestInfo.RequestDate.ToString("yyyy-MM-dd HH:mm:ss")},
-                { "P_PickUpTime", requestInfo.PickUpTime.ToString()},
-                { "P_PickUpPoint",  requestInfo.PickUpPoint},
-                { "P_Area", requestInfo.Area},
-                { "P_DropAddress", requestInfo.DropAddress},
+                { "p_EmpName", requestInfo.EmpName} ,
+                { "p_RequestDate",  requestInfo.RequestDate},
+                { "p_PickupTime", requestInfo.PickUpTime},
+                { "p_PickupPoint",  requestInfo.PickUpPoint},
+                { "p_Area", requestInfo.Area},
+                { "p_DropAddress", requestInfo.DropAddress},
             };
-           await _databaseService.ExecuteStoredProcAsync<RequestInfo>(StoredProcedures.GetRequestCab, parameters);
+           await _databaseService.ExecuteStoredProcAsync<Task>(StoredProcedures.GetRequestCab, parameters);
         }
         /// <summary>
         /// Returns Cab request details
         /// </summary>
         /// <param name="pickUpPoint"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RequestInfo>> ViewCabRequestsAsync(string pickUpPoint)
+        public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync(string pickUpPoint)
         {
-            var parameters = new Dictionary<string, string>
+            Dictionary<string, string> parameters = new Dictionary<string, string>
                 {
                     { "P_PickUpPoint", pickUpPoint }
                 };
