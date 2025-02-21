@@ -25,9 +25,9 @@ namespace Cab.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Request")]
-        public async Task<IActionResult> RequestCabAsync([FromBody] RequestInfo requestInfo)
+        public async Task<IActionResult> PostCabRequestAsync([FromBody] RequestInfo requestInfo)
         {
-            await _requestCabService.RequestCabAsync(requestInfo);
+            await _requestCabService.PostCabRequestAsync(requestInfo);
             return NoContent();
         }
         /// <summary>
@@ -37,9 +37,9 @@ namespace Cab.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ViewCabRequest")]
-        public async Task<IEnumerable<RequestInfo>> ViewCabRequestAsync(string pickUpPoint)
+        public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync(string pickUpPoint)
         {
-            return await _requestCabService.ViewCabRequestsAsync(pickUpPoint);
+            return await _requestCabService.GetCabRequestsAsync(pickUpPoint);
         }
     }
 }

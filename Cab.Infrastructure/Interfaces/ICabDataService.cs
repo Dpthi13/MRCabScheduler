@@ -10,7 +10,7 @@ namespace Cab.Infrastructure.Interfaces
     public interface ICabDataService
     {
         Task UpsertCabDataAsync(CabInfo cabInfo);
-        Task <CabInfo>ViewCabDetailsAsync(int empId);
+        Task <CabInfo> GetCabDetailsAsync(int empId);
 
     }
 }

@@ -36,9 +36,9 @@ namespace Cab.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ViewCabDetails")]
-        public async Task<CabInfo> ViewCabDetailsAsync(int empId)
+        public async Task<CabInfo> GetCabDetailsAsync(int empId)
         {
-            return await _cabDataService.ViewCabDetailsAsync(empId);
+            return await _cabDataService.GetCabDetailsAsync(empId);
         }
 
     }
