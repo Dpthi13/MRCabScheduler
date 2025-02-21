@@ -36,6 +36,30 @@ namespace Cab.Service
             return userInfo;
         }
         /// <summary>
+        /// Authenticates a user based on the provided employee ID and password.
+        /// Returns an access token if authentication is successful; otherwise, returns an unauthorized response.
+        /// </summary>
+        /// <param name="empId"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<(string EmpId, string AccessToken)?> AuthenticateUserAsync(string empId, string password)
+            {
+                var parameters = new Dictionary<string, string>
+                    {
+                        { "P_EmpId", empId },
+                        { "P_Password", password }
+                    };
+
+            var userInfo = await _databaseService.ExecuteStoredProcAsync<UserInfo>(StoredProcedures.GetUserInformation, parameters);
+
+            if (userInfo == null)
+                return null;
+
+            string token = _tokenService.CreateToken(userInfo);
+
+            return (userInfo.EmpId, token);
+        }
+        /// <summary>
         /// Register new empployee in system
         /// </summary>
         /// <param name="userRegistration"></param>
