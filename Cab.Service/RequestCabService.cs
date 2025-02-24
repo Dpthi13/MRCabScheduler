@@ -43,14 +43,14 @@ namespace Cab.Service
         /// </summary>
         /// <param name="pickUpPoint"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync(string pickUpPoint)
+        public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync()
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            /*Dictionary<string, string> parameters = new Dictionary<string, string>
                 {
                     { "P_PickUpPoint", pickUpPoint }
                 };
-
-            return await _databaseService.ExecuteStoredProcListAsync<RequestInfo>(StoredProcedures.GetViewCabRequests, parameters);
+            */
+            return await _databaseService.ExecuteStoredProcWithNoParamsAsync<RequestInfo>(StoredProcedures.GetViewCabRequests );
         }
 
     }

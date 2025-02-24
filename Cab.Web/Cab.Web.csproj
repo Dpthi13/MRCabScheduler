@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\static\css\main.a6be065e.css.map" />
     <None Include="wwwroot\static\css\main.f8c38ad4.css.map" />
+    <None Include="wwwroot\static\js\main.48ecbada.js" />
+    <None Include="wwwroot\static\js\main.48ecbada.js.map" />
     <None Include="wwwroot\static\js\main.ae75c33a.js" />
     <None Include="wwwroot\static\js\main.ae75c33a.js.map" />
     <None Include="wwwroot\static\media\fa-brands-400.c210719e60948b211a12.woff2" />

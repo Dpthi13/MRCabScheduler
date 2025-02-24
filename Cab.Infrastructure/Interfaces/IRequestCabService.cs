@@ -10,6 +10,6 @@ namespace Cab.Infrastructure.Interfaces
     public interface IRequestCabService
     {
         Task PostCabRequestAsync(RequestInfo requestInfo);
-        Task<IEnumerable<RequestInfo>> GetCabRequestsAsync(string pickUpPoint);
+        Task<IEnumerable<RequestInfo>> GetCabRequestsAsync();
     }
 }
