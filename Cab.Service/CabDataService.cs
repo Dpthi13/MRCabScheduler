@@ -27,26 +27,25 @@ namespace Cab.Service
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
-                { "p_CabId", cabInfo.CabId.ToString()} ,
                 { "p_DriverName",  cabInfo.DriverName},
                 { "p_CabNumber", cabInfo.CabNumber},
                 { "p_DriverPhoneNo",  cabInfo.DriverPhoneNo},
-                { "p_PickupTime",  cabInfo.PickupTime.ToString(@"hh\:mm\:ss")},
-                {"p_PickupDate", cabInfo.PickUpDate.ToString("yyyy-MM-dd")},
-                { "P_DropAddress", cabInfo.DropAddress},
+                { "p_PickupTime",  cabInfo.PickUpTime},
+                {"p_PickupDate", cabInfo.PickUpDate},
+                { "p_DropAddress", cabInfo.DropAddress},
             };
 
-            await _databaseService.ExecuteStoredProcAsync<CabInfo>(StoredProcedures.GetUpsertCabData, parameters);
+            await _databaseService.ExecuteStoredProcAsync<Task>(StoredProcedures.GetUpsertCabData, parameters);
         }
         /// <summary>
         /// returns the cab details
         /// </summary>
         /// <returns></returns>
-        public async Task<CabInfo> GetCabDetailsAsync(int EmpId)
+        public async Task<CabInfo> GetCabDetailsAsync(int empId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>
                 {
-                    { "p_EmpId", EmpId.ToString() }
+                    { "p_EmpId", empId.ToString() }
                 };
 
             return await _databaseService.ExecuteStoredProcAsync<CabInfo>(StoredProcedures.GetCabDetails, parameters);
