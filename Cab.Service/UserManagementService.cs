@@ -42,7 +42,7 @@ namespace Cab.Service
         /// <param name="empId"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<(string EmpId, string AccessToken)?> AuthenticateUserAsync(string empId, string password)
+        public async Task<(string EmpId, string AccessToken, string RoleName)?> AuthenticateUserAsync(string empId, string password)
             {
                 var parameters = new Dictionary<string, string>
                     {
@@ -57,7 +57,7 @@ namespace Cab.Service
 
             string token = _tokenService.CreateToken(userInfo);
 
-            return (userInfo.EmpId, token);
+            return (userInfo.EmpId, token, userInfo.RoleName);
         }
         /// <summary>
         /// Register new empployee in system
