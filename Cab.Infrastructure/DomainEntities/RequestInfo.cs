@@ -8,6 +8,7 @@ namespace Cab.Infrastructure.DomainEntities
 {
     public class RequestInfo
     {
+        public int? RequestID { get; set; }
         public int EmpId { get; set; }
         public string EmpName { get; set; }
         public string RequestDate { get; set; }
