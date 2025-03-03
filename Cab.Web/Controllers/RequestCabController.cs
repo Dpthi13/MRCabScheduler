@@ -27,19 +27,21 @@ namespace Cab.Web.Controllers
         [Route("Request")]
         public async Task<IActionResult> PostCabRequestAsync([FromBody] RequestInfo requestInfo)
         {
-            await _requestCabService.PostCabRequestAsync(requestInfo);
-            return NoContent();
+            int requestId = await _requestCabService.PostCabRequestAsync(requestInfo);
+            return Ok(new { message = "Cab request submitted successfully." });
         }
-        /// <summary>
-        /// returns cab request details
-        /// </summary>
-        /// <param name="pickUpPoint"></param>
-        /// <returns></returns>
+
+        ///// <summary>
+        ///// returns cab request details
+        ///// </summary>
+        ///// <param name="pickUpPoint"></param>
+        ///// <returns></returns>
         [HttpGet]
         [Route("ViewCabRequest")]
         public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync()
         {
             return await _requestCabService.GetCabRequestsAsync();
         }
+
     }
 }
