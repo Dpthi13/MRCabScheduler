@@ -4,6 +4,6 @@ namespace Cab.Infrastructure.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(UserInfo user);
+        string CreateToken(UserInfo user, string role);
     }
 }

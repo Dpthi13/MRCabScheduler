@@ -18,14 +18,14 @@ namespace Cab.Service
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public string CreateToken(UserInfo user)
+        public string CreateToken(UserInfo user, string role)
         {
             var claims = new List<Claim>
             {
                 new Claim("empId", string.IsNullOrEmpty(user.EmpId) ? "": user.EmpId),
                 new Claim("empName", string.IsNullOrEmpty(user.EmpName) ? "": user.EmpName),
                 new Claim("email", string.IsNullOrEmpty(user.Email) ? "" : user.Email),
-                new Claim("role", string.IsNullOrEmpty(user.RoleName) ? "": user.RoleName)
+                new Claim("role", string.IsNullOrEmpty(user.Role) ? "": user.Role)
             };
 
             var token = new JwtSecurityToken(
