@@ -28,8 +28,9 @@ namespace Cab.Web.Controllers
         public async Task<IActionResult> UpsertCabDataAsync([FromBody] CabInfo cabInfo)
         {
             await _cabDataService.UpsertCabDataAsync(cabInfo);
-            return NoContent();
+            return Ok(new { message = "Cab assigned successfully!" }); 
         }
+
         /// <summary>
         /// returns the cab details
         /// </summary>

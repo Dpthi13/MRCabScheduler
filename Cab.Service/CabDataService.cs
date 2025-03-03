@@ -27,6 +27,8 @@ namespace Cab.Service
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
+                { "p_CabId", cabInfo.CabId.ToString() },
+                { "p_RequestId", cabInfo.RequestId.ToString() },
                 { "p_DriverName",  cabInfo.DriverName},
                 { "p_CabNumber", cabInfo.CabNumber},
                 { "p_DriverPhoneNo",  cabInfo.DriverPhoneNo},
