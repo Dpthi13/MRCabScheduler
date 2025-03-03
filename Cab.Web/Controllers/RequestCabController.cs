@@ -36,6 +36,7 @@ namespace Cab.Web.Controllers
         /// <param name="pickUpPoint"></param>
         /// <returns></returns>
         [HttpGet]
+
         [Route("ViewCabRequest")]
         public async Task<IEnumerable<RequestInfo>> GetCabRequestsAsync()
         {

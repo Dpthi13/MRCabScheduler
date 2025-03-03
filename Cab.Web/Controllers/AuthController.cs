@@ -47,7 +47,8 @@ namespace Cab.Web.Controllers
             return Ok(new
             {
                 empId = userTokenData.Value.EmpId,
-                accessToken = userTokenData.Value.AccessToken
+                accessToken = userTokenData.Value.AccessToken,
+                role = userTokenData.Value.Role
             });
         }
         /// <summary>

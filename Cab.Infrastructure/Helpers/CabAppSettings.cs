@@ -5,6 +5,7 @@ namespace Cab.Infrastructure.Helpers
     {
         public ConnectionStrings ConnectionStrings { get; set; }
         public Jwt Jwt { get; set; }
+        public IEnumerable<string> PermittedUserAccess {  get; set; }
     }
 
     public class ConnectionStrings
