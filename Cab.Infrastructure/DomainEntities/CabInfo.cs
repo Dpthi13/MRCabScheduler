@@ -9,7 +9,8 @@ namespace Cab.Infrastructure.DomainEntities
     public class CabInfo
     {
         public int CabId { get; set; }
-        public string RequestId { get; set; }
+        public int  RequestId { get; set; }
+        public int EmpId { get; set; }
         public string DriverName { get; set; }
         public string CabNumber { get; set; }
         public string DriverPhoneNo { get; set; }

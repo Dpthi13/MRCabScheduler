@@ -29,6 +29,7 @@ namespace Cab.Service
             {
                 { "p_CabId", cabInfo.CabId.ToString() },
                 { "p_RequestId", cabInfo.RequestId.ToString() },
+                { "p_EmpId", cabInfo.EmpId.ToString() },
                 { "p_DriverName",  cabInfo.DriverName},
                 { "p_CabNumber", cabInfo.CabNumber},
                 { "p_DriverPhoneNo",  cabInfo.DriverPhoneNo},
